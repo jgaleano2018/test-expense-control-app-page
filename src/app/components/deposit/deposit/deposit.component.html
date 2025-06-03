@@ -1,0 +1,72 @@
+<p>deposit works!</p>
+
+<h1>DevExtreme Angular Components Usage Samples</h1>
+
+<div class="demo-container">
+    <h2>Deposit</h2>
+
+    <h2>Angular Forms</h2>
+   
+    <h2>dxForm</h2>
+    <dx-form
+        #dxForm
+        [formData]="formData"
+        labelLocation="top"
+        validationGroup="formGroup">
+        <dxi-item
+            dataField="account"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item
+            dataField="date"
+            editorType="dxDateBox">
+            <dxi-validation-rule type="required" message="Date is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item 
+            dataField="amount" 
+            editorType="dxTextBox"
+            [label]="{text: 'Változó %'}">
+            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
+            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
+        </dxi-item>       
+        <dxi-item itemType="button" horizontalAlignment="left"
+            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveDeposit }">
+        </dxi-item>
+    </dx-form>
+
+    <mat-form-field>
+        <mat-label>Monetary Fund Type</mat-label>
+        <select matNativeControl (ngModel)="monetaryFundTypeSelected" name="car">
+        <option value="" selected></option>
+        @for (car of monetaryFundTypeList; track car) {
+            <option [value]="car.idMonetaryFundType">{{car.name}}</option>
+        }
+        </select>
+    </mat-form-field>
+
+
+    <h2>dxDataGrid</h2>
+
+    <dx-data-grid [dataSource]="deposits">
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[5, 10, 20]"
+            [showInfo]="true">
+        </dxo-pager>
+        <dxi-column dataField="IdDeposit"></dxi-column>
+        <dxi-column dataField="Account"></dxi-column>
+        <dxi-column dataField="Date"></dxi-column>
+        <dxi-column dataField="Amount"></dxi-column>
+        <dxi-column dataField="MonetaryFundType"></dxi-column>
+        <dxo-editing
+            [allowUpdating]="allowUpdating">
+        </dxo-editing>
+        <dxo-editing
+            [allowDeleting]="allowDeleting">
+        </dxo-editing>
+
+    </dx-data-grid>
+
+</div>

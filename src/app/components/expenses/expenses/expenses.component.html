@@ -1,0 +1,142 @@
+<p>Expenses works!</p>
+
+<h1>DevExtreme Angular Components Usage Samples</h1>
+
+<div class="demo-container">
+    <h2>Header Expenses</h2>
+   
+    <h2>dxForm</h2>
+    <dx-form
+        #dxForm
+        [formData]="formDataHeader"
+        labelLocation="top"
+        validationGroup="formGroup">
+        <dxi-item
+            dataField="account"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item
+            dataField="dateExpense"
+            editorType="dxDateBox">
+            <dxi-validation-rule type="required" message="Date Expense is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item
+            dataField="observations"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Observations is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item 
+            dataField="amount" 
+            editorType="dxTextBox"
+            [label]="{text: 'Változó %'}">
+            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
+            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
+        </dxi-item>       
+        <dxi-item itemType="button" horizontalAlignment="left"
+            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveHeaderExpenses }">
+        </dxi-item>
+    </dx-form>
+
+    <mat-form-field>
+        <mat-label>Business</mat-label>
+        <select matNativeControl (ngModel)="businessSelected" name="car">
+        <option value="" selected></option>
+        @for (car of businessList; track car) {
+            <option [value]="car.idBusiness">{{car.name}}</option>
+        }
+        </select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Monetary Fund Type</mat-label>
+        <select matNativeControl (ngModel)="monetaryFundTypeSelected" name="car">
+        <option value="" selected></option>
+        @for (car of monetaryFundTypeList; track car) {
+            <option [value]="car.idMonetaryFundType">{{car.name}}</option>
+        }
+        </select>
+    </mat-form-field>
+
+    <h2>Detail Expenses</h2>
+   
+    <h2>dxForm</h2>
+    <dx-form
+        #dxForm
+        [formData]="formDataDetail"
+        labelLocation="top"
+        validationGroup="formGroup">
+        <dxi-item
+            dataField="idHeaderExpenses"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Id Header Expenses is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item 
+            dataField="amount" 
+            editorType="dxTextBox"
+            [label]="{text: 'Változó %'}">
+            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
+            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
+        </dxi-item>       
+        <dxi-item itemType="button" horizontalAlignment="left"
+            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveDetailExpenses }">
+        </dxi-item>
+    </dx-form>
+
+    <mat-form-field>
+        <mat-label>Expenses Type</mat-label>
+        <select matNativeControl (ngModel)="expensesTypeSelected" name="car">
+        <option value="" selected></option>
+        @for (car of expensesTypeList; track car) {
+            <option [value]="car.idExpenseType">{{car.name}}</option>
+        }
+        </select>
+    </mat-form-field>
+
+
+    <h2>dxDataGrid - DetailExpenses</h2>
+
+    <dx-data-grid [dataSource]="headerExpenses">
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[5, 10, 20]"
+            [showInfo]="true">
+        </dxo-pager>
+        <dxi-column dataField="idHeaderExpenses"></dxi-column>
+        <dxi-column dataField="Account"></dxi-column>
+        <dxi-column dataField="Date"></dxi-column>
+        <dxi-column dataField="Amount"></dxi-column>
+        <dxi-column dataField="MonetaryFundType"></dxi-column>
+        <dxo-editing
+            [allowUpdating]="allowUpdating">
+        </dxo-editing>
+        <dxo-editing
+            [allowDeleting]="allowDeleting">
+        </dxo-editing>
+
+    </dx-data-grid>
+
+     <h2>dxDataGrid - DetailExpenses</h2>
+
+    <dx-data-grid [dataSource]="detailExpenses">
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[5, 10, 20]"
+            [showInfo]="true">
+        </dxo-pager>
+        <dxi-column dataField="idHeaderExpenses"></dxi-column>
+        <dxi-column dataField="idDetailExpenses"></dxi-column>
+        <dxi-column dataField="Amount"></dxi-column>
+        <dxi-column dataField="IdExpenseType"></dxi-column>
+        <dxo-editing
+            [allowUpdating]="allowUpdatingDetailExpenses">
+        </dxo-editing>
+        <dxo-editing
+            [allowDeleting]="allowDeletingDetailExpenses">
+        </dxo-editing>
+
+    </dx-data-grid>
+
+</div>

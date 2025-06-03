@@ -1,0 +1,71 @@
+<p>user works!</p>
+
+<h1>DevExtreme Angular Components Usage Samples</h1>
+
+<div class="demo-container">
+    <h2>User</h2>
+
+    <h2>Angular Forms</h2>
+   
+    <h2>dxForm</h2>
+    <dx-form
+        #dxForm
+        [formData]="formData"
+        labelLocation="top"
+        validationGroup="formGroup">
+        <dxi-item
+            dataField="name"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Name is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item
+            dataField="phone"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Phone is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item
+            dataField="address"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Address is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item
+            dataField="userName"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="User Name is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item
+            dataField="password"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Password is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item itemType="button" horizontalAlignment="left"
+            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveUser }">
+        </dxi-item>
+    </dx-form>
+
+
+    <h2>dxDataGrid</h2>
+
+    <dx-data-grid [dataSource]="users">
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[5, 10, 20]"
+            [showInfo]="true">
+        </dxo-pager>
+        <dxi-column dataField="IdUser"></dxi-column>
+        <dxi-column dataField="Name"></dxi-column>
+        <dxi-column dataField="Phone"></dxi-column>
+        <dxi-column dataField="Address"></dxi-column>
+        <dxi-column dataField="UserName"></dxi-column>
+        <dxi-column dataField="Password"></dxi-column>
+        <dxo-editing
+            [allowUpdating]="allowUpdating">
+        </dxo-editing>
+        <dxo-editing
+            [allowDeleting]="allowDeleting">
+        </dxo-editing>
+
+    </dx-data-grid>
+
+</div>

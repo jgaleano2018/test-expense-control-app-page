@@ -1,0 +1,32 @@
+<p>login works!</p>
+
+<h1>DevExtreme Angular Components Usage Samples</h1>
+
+<div class="demo-container">
+    <h2>Login</h2>
+
+    <h2>Angular Forms</h2>
+   
+    <h2>dxForm</h2>
+    <dx-form
+        #dxForm
+        [formData]="formData"
+        labelLocation="top"
+        validationGroup="formGroup">
+        <dxi-item
+            dataField="userName"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="User Name is required."></dxi-validation-rule>
+        </dxi-item>
+         <dxi-item
+            dataField="password"
+            editorType="dxTextBox">
+            <dxi-validation-rule type="required" message="Password is required."></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item itemType="button" horizontalAlignment="left"
+            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: loginUser }">
+        </dxi-item>
+    </dx-form>
+
+
+</div>
