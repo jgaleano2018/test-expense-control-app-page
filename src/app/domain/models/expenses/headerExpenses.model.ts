@@ -7,4 +7,6 @@ export interface HeaderExpensesModel {
   idBusiness: number;
   idDocumentType: number;
   idUser: number;
+  key: number;
+  type: string;
 }

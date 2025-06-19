@@ -1,0 +1,55 @@
+
+<div class="demo-container">
+
+
+    <h2>Angular Forms</h2>
+   
+    <h2>dxForm</h2>
+
+    <form [formGroup]="formData" (ngSubmit)="getDataChartBudgetedAndExecutedByExpenseType()">
+        
+        <div class="form-group">
+            <label for="dateBudgetIni">Date Budget Initial: <span class="lblError">*</span></label>
+            <div class="controls">
+                <input type="date" id="dateBudgetIni" placeholder="Conciliation Date" class="form-control" formControlName="dateBudgetIni" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dateBudgetEnd">Date Budget End: <span class="lblError">*</span></label>
+            <div class="controls">
+                <input type="date" id="dateBudgetEnd" placeholder="Conciliation Date" class="form-control" formControlName="dateBudgetEnd" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" style="width: 15%">
+                Submit
+            </button>
+        </div>
+     </form>
+
+
+
+    <h2>Chart Budgeted and Executed by Expense Type</h2>
+    <p>chart-budgeted-and-executed-by-expense-type works!</p>
+
+
+    <dx-chart id="chart" [dataSource]="grossReportBudgetedExpenses">
+    <dxo-common-series-settings
+        argumentField="expenseTypeName"
+        type="bar"
+        valueField="totalBudgetedByDate"
+    >
+    </dxo-common-series-settings>
+    <dxo-series-template nameField="dateBudget"  [customizeSeries]="customizeSeries">
+    </dxo-series-template>
+    <dxo-title text="Expense Type">
+        <dxo-subtitle text="(in total amount)"></dxo-subtitle>
+    </dxo-title>
+    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center">
+    </dxo-legend>
+    <dxo-export [enabled]="true"></dxo-export>
+    </dx-chart>
+
+</div>

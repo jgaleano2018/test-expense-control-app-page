@@ -1,161 +1,122 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { catchError, map, Observable } from 'rxjs';
-
 import { DetailExpensesModel } from '../../../domain/models/expenses/detailExpenses.model';
 import { HeaderExpensesModel } from '../../../domain/models/expenses/headerExpenses.model';
-
-import { ExpensesOperationError } from '../../../domain/errors/expenses/expenses-operation-error';
-
-import IManageDetailExpenses from '../../../domain/ports/expenses/i-manage-detailExpenses';
 import { environment } from '../../../environtments/environtment';
-import IManageHeaderExpenses from '../../../domain/ports/expenses/i-manage-headerExpenses';
-import { MonetaryFundTypeModel } from '../../../domain/models/monetaryFundType/monetaryFundType.model';
-import { BusinessModel } from '../../../domain/models/business/business.model';
-import { ExpensesTypeModel } from '../../../domain/models/expenses/expensesType.model';
-
+import axios from 'axios';
 
 @Injectable({ providedIn: 'root' })
-export class ExpensesService implements IManageHeaderExpenses, IManageDetailExpenses {
+export class ExpensesService {
 
-  private expensesUrl = 'api/expenses';  // URL to web api
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
-  constructor(private http: HttpClient) { }
-
-  /** GET heroes from the server */
-  getDetailExpensess(): Observable<DetailExpensesModel[]> {
-    return this.http.get<DetailExpensesModel[]>(environment.apiUrl).pipe(
-      catchError(this.handleHttpError())
-    );
+  getHeaderExpensess(): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetAllExpenses');
   }
 
-  /** GET heroes from the server */
-  getHeaderExpensess(): Observable<HeaderExpensesModel[]> {
-    return this.http.get<HeaderExpensesModel[]>(environment.apiUrl).pipe(
-      catchError(this.handleHttpError())
-    );
+  getHeaderExpenses(id: number): Promise<any>{
+    return axios.get(environment.apiUrl+'/Expenses/GetHeaderExpenses/'+id);
   }
 
-   /** GET heroes from the server */
-  getMonetaryFundType(): Observable<MonetaryFundTypeModel[]> {
-    return this.http.get<MonetaryFundTypeModel[]>(environment.apiUrl).pipe(
-      catchError(this.handleHttpError())
-    );
+  getDetailExpenses(): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetAllExpenses');
   }
 
-   /** GET heroes from the server */
-  getBusinessType(): Observable<BusinessModel[]> {
-    return this.http.get<BusinessModel[]>(environment.apiUrl).pipe(
-      catchError(this.handleHttpError())
-    );
+  getDetailExpensesSingle(idDetailExpenses: number): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetAllDetailExpenses/'+idDetailExpenses);
   }
 
-  /** GET heroes from the server */
-  getExpensesType(): Observable<ExpensesTypeModel[]> {
-    return this.http.get<ExpensesTypeModel[]>(environment.apiUrl).pipe(
-      catchError(this.handleHttpError())
-    );
+  getMonetaryFundType(): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetMonetaryFundType');
   }
 
-
-  /** GET hero by id. Will 404 if id not found */
-  getDetailExpenses(id: number): Observable<DetailExpensesModel> {
-    const url = `${environment.apiUrl}/${id}`;
-    return this.http.get<DetailExpensesModel>(url).pipe(
-      catchError(this.handleHttpError())
-    );
+  getBusinessType(): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetBusiness');
   }
 
-   /** GET hero by id. Will 404 if id not found */
-  getHeaderExpenses(id: number): Observable<HeaderExpensesModel> {
-    const url = `${environment.apiUrl}/${id}`;
-    return this.http.get<HeaderExpensesModel>(url).pipe(
-      catchError(this.handleHttpError())
-    );
+  getDocumentType(): Promise<any>{
+    return axios.get(environment.apiUrl+'/api/Expenses/GetDocumentType');
   }
 
-  /* GET heroes whose name contains search term */
-  searchHeaderExpensess(term: string): Observable<HeaderExpensesModel[]> {
-    return this.http.get<HeaderExpensesModel[]>(`${environment.apiUrl}/?name=${term}`).pipe(
-      catchError(this.handleHttpError())
-    );
-  }
+  addExpenses(dataHeaderExpenses?: HeaderExpensesModel, dataDetailExpenses?: DetailExpensesModel[]): Promise<any>{   
+    
+    let expenses = {
+      "HeaderExpenses": {
+        account: dataHeaderExpenses?.account,
+        dateExpense: dataHeaderExpenses?.dateExpense,
+        idMonetaryFundType: dataHeaderExpenses?.idMonetaryFundType,
+        observations: dataHeaderExpenses?.observations,
+        idBusiness: dataHeaderExpenses?.idBusiness,
+        idDocumentType: dataHeaderExpenses?.idDocumentType,
+        idUser: dataHeaderExpenses?.idUser
+      },
+      "DetailExpenses": {
+      }
+    }
 
-   /* GET heroes whose name contains search term */
-  searchDetailExpensess(term: string): Observable<DetailExpensesModel[]> {
-    return this.http.get<DetailExpensesModel[]>(`${environment.apiUrl}/?name=${term}`).pipe(
-      catchError(this.handleHttpError())
-    );
-  }
 
-  //////// Save methods //////////
+     /*"HeaderExpenses": {
+        "account": "10000001",
+        "dateExpense": "2025-06-12",
+        "idMonetaryFundType": 1,
+        "idBusiness": 1,
+        "Observations": "Expenses contability",
+        "idDocumentType": 1,
+        "idUser": 1
+    },
+    "DetailExpenses": [{
+        "idExpenseType": 1,
+        "amount": 3500000,
+        "idUser": 1
+    },*****/
 
-  /** POST: add a new hero to the server */
-  addHeaderExpenses(dataHeaderExpenses: HeaderExpensesModel): Observable<HeaderExpensesModel> {
-    return this.http.post<HeaderExpensesModel>(environment.apiUrl, dataHeaderExpenses, this.httpOptions).pipe(
-      catchError(this.handleHttpError())
-    );
-  }
+    let arrayDetailExpenses = dataDetailExpenses != null ? dataDetailExpenses : [];
 
-  /** POST: add a new hero to the server */
-  addDetailExpenses(expenses: DetailExpensesModel): Observable<DetailExpensesModel> {
-    return this.http.post<DetailExpensesModel>(environment.apiUrl, expenses, this.httpOptions).pipe(
-      catchError(this.handleHttpError())
-    );
-  }
+    let newDetailExpensesTemplate: any;
+    let arrayNewDetExp = [];
 
-  /** DELETE: delete the hero from the server */
-  deleteHeaderExpenses(id: number): Observable<number> {
-    const url = `${environment.apiUrl}/${id}`;
-    return this.http.delete<HeaderExpensesModel>(url, this.httpOptions).pipe(
-      catchError(this.handleHttpError()),
-      // returns the deleted hero id
-      map(_ => id)
-    );
-  }
+    for (let idx=0; idx<arrayDetailExpenses.length; idx++) {
 
-   /** DELETE: delete the hero from the server */
-  deleteDetailExpenses(id: number): Observable<number> {
-    const url = `${environment.apiUrl}/${id}`;
-    return this.http.delete<DetailExpensesModel>(url, this.httpOptions).pipe(
-      catchError(this.handleHttpError()),
-      // returns the deleted hero id
-      map(_ => id)
-    );
-  }
+      newDetailExpensesTemplate = {
+        "idExpenseType": arrayDetailExpenses[idx].idExpenseType,
+        "amount": arrayDetailExpenses[idx].amount,
+        "idUser": arrayDetailExpenses[idx].idUser
+      }
 
-  /** PUT: update the hero on the server */
-  updateHeaderExpenses(expenses: HeaderExpensesModel): Observable<HeaderExpensesModel> {
-    return this.http.put<HeaderExpensesModel>(environment.apiUrl, expenses, this.httpOptions).pipe(
-      catchError(this.handleHttpError()),
-      // returns the modified hero
-      map(_ => expenses)
-    );
-  }
+      arrayNewDetExp.push(newDetailExpensesTemplate);
+    }
+    
 
-   /** PUT: update the hero on the server */
-  updateDetailExpenses(expenses: DetailExpensesModel): Observable<DetailExpensesModel> {
-    return this.http.put<DetailExpensesModel>(environment.apiUrl, expenses, this.httpOptions).pipe(
-      catchError(this.handleHttpError()),
-      // returns the modified hero
-      map(_ => expenses)
-    );
+    expenses.DetailExpenses = arrayNewDetExp;
+
+    console.log("After create expenses transaction.....");
+    console.log(expenses);
+
+    return axios.post(environment.apiUrl+'/api/Expenses', expenses);
   }
 
 
-  /**
-   * Handle Http operation that failed.
-   * Throw an HeroOperation
-   */
-   private handleHttpError() {
-    return (error: any): Observable<any> => {
-      throw new ExpensesOperationError(error.body.error);
-    };
+  updateExpenses(id: number, dataHeaderExpenses: HeaderExpensesModel, dataDetailExpenses: DetailExpensesModel[]): Promise<any>{   
+    
+    let expenses = {
+      "HeaderExpenses": {
+        idHeaderExpenses: dataHeaderExpenses.idHeaderExpenses,
+        account: dataHeaderExpenses.account,
+        dateExpense: dataHeaderExpenses.dateExpense,
+        idMonetaryFundType: dataHeaderExpenses.idMonetaryFundType,
+        observations: dataHeaderExpenses.observations,
+        idBusiness: dataHeaderExpenses.idBusiness,
+        idDocumentType: dataHeaderExpenses.idDocumentType,
+        idUser: dataHeaderExpenses.idUser
+      },
+      "DetailExpenses": {
+      }
+    }
+
+    expenses.DetailExpenses = dataDetailExpenses;
+
+    return axios.put(environment.apiUrl+'/Expenses/' + id, expenses);
+  }
+
+  deleteExpenses(id:number): Promise<any>{
+    return axios.delete(environment.apiUrl+'/Expenses/' + id);
   }
 
 }

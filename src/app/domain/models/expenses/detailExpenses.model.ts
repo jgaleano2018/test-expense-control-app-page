@@ -4,4 +4,6 @@ export interface DetailExpensesModel {
   idExpenseType: number;
   amount: number;
   idUser: number;
+  key: number;
+  type: string;
 }

@@ -1,1 +1,13 @@
-<p>home works!</p>
+<ul>
+    @for (item of navigationItems; track item) {
+        <li>
+            <a [routerLink]="item.url">{{ item.name }}</a>
+        </li>
+    }
+</ul>
+
+<h3>Raw JSON Data:</h3>
+<pre>{{ navigationItems | json }}</pre>
+  
+  <!-- Loads the selected component dynamically -->
+  <router-outlet></router-outlet>

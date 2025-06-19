@@ -1,0 +1,131 @@
+<div class="demo-container">
+
+
+    <h2>Angular Forms</h2>
+   
+    <h2>dxForm</h2>
+
+    <form [formGroup]="formData" (ngSubmit)="ConsultMovementsBudgetsExpenses()">
+        
+        <div class="form-group">
+            <label for="dateBudgetIni">Date Budget Initial: <span class="lblError">*</span></label>
+            <div class="controls">
+                <input type="date" id="dateBudgetIni" placeholder="Conciliation Date" class="form-control" formControlName="dateBudgetIni" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dateBudgetEnd">Date Budget End: <span class="lblError">*</span></label>
+            <div class="controls">
+                <input type="date" id="dateBudgetEnd" placeholder="Conciliation Date" class="form-control" formControlName="dateBudgetEnd" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" style="width: 15%">
+                Submit
+            </button>
+        </div>
+     </form>
+
+
+
+    <h2>Report Movements Budgets Expenses</h2>
+
+    <dx-data-grid
+    [dataSource]="reportMovementBudgetsExpenses"
+    keyExpr="idBudget"
+    [showBorders]="true">
+    <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxi-column dataField="idBudget"></dxi-column>
+    <dxi-column dataField="accountBudget"></dxi-column>
+    <!--<dxi-column dataField="descriptionBudget"></dxi-column>-->
+    <dxi-column dataField="amountBudget"></dxi-column>
+    
+    <dxi-column
+        dataField="expenseTypeName"
+        [groupIndex]="1"
+        [calculateGroupValue]="calculateGroupValueExpenseTypeName"
+        groupCellTemplate="groupCellTemplate">
+    </dxi-column>
+    <div *dxTemplate="let data of 'groupCellTemplate'">
+        <div>
+        {{data.column.caption}}: {{data.value.split(";")[1]}}
+        </div>
+    </div>
+    <dxi-column
+        dataField="descriptionBudget"
+        [groupIndex]="0"
+        [calculateGroupValue]="calculateGroupValueBudgetName"
+        groupCellTemplate="groupCellTemplateBudget">
+    </dxi-column>
+    <div *dxTemplate="let data of 'groupCellTemplateBudget'">
+        <div>
+        {{data.column.caption}}: {{data.value.split(";")[1]}}
+        </div>
+    </div>
+    </dx-data-grid>
+
+
+    <h2>Report Movements Expenses Expenses</h2>
+
+    <dx-data-grid
+    [dataSource]="reportMovementBudgetsExpenses"
+    keyExpr="idHeaderExpenses"
+    [showBorders]="true">
+    <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxi-column dataField="idHeaderExpenses"></dxi-column>
+    <dxi-column dataField="dateExpense"></dxi-column>
+    <dxi-column dataField="idMonetaryFundType"></dxi-column>
+    <dxi-column dataField="monetaryFundTypeName"></dxi-column>
+    <dxi-column dataField="observations"></dxi-column>
+    <dxi-column dataField="idBusiness"></dxi-column>
+    <dxi-column dataField="businessName"></dxi-column>
+    <dxi-column dataField="idDocumentType"></dxi-column>
+    <dxi-column dataField="documentTypeName"></dxi-column>
+    <dxi-column dataField="idDetailExpenses"></dxi-column>
+    <dxi-column dataField="idExpenseType"></dxi-column>
+    <dxi-column dataField="expenseTypeName"></dxi-column>
+    <dxi-column dataField="amountDetailExpense"></dxi-column>
+    <dxi-column dataField="idUser"></dxi-column>
+    <dxi-column dataField="userName"></dxi-column>    
+    
+    <dxi-column
+        dataField="expenseTypeName"
+        [groupIndex]="2"
+        [calculateGroupValue]="calculateGroupValueExpenseTypeName2"
+        groupCellTemplate="groupCellTemplate">
+    </dxi-column>
+    <div *dxTemplate="let data of 'groupCellTemplate'">
+        <div>
+        {{data.column.caption}}: {{data.value.split(";")[1]}}
+        </div>
+    </div>
+    <dxi-column
+        dataField="idHeaderExpenses"
+        [groupIndex]="1"
+        [calculateGroupValue]="calculateGroupValueHeaderExpensesName"
+        groupCellTemplate="groupCellTemplateHeaderExpenses">
+    </dxi-column>
+    <div *dxTemplate="let data of 'groupCellTemplateHeaderExpenses'">
+        <div>
+        {{data.column.caption}}: {{data.value.split(";")[1]}}
+        </div>
+    </div>
+    <dxi-column
+        dataField="idDetailExpenses"
+        [groupIndex]="0"
+        [calculateGroupValue]="calculateGroupValueDetailExpensesName"
+        groupCellTemplate="groupCellTemplateDetailExpenses">
+    </dxi-column>
+    <div *dxTemplate="let data of 'groupCellTemplatDetailExpenses'">
+        <div>
+        {{data.column.caption}}: {{data.value.split(";")[1]}}
+        </div>
+    </div>
+    </dx-data-grid>
+
+
+</div>

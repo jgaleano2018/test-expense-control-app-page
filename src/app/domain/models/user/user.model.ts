@@ -5,4 +5,6 @@ export interface UserModel {
   address: string;
   userName: string;
   password: string;
+  key: number;
+  type: string;
 }

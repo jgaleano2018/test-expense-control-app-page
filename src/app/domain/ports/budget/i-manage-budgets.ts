@@ -5,9 +5,9 @@ export default interface IManageHeroes {
 
     getBudgets(): Observable<BudgetModel[]>
     searchBudgets(term: string): Observable<BudgetModel[]>
-    getBudget(id: number): Observable<BudgetModel> 
+    getBudget(idBudget: number): Observable<BudgetModel> 
     addBudget(budget: BudgetModel): Observable<BudgetModel>
     updateBudget(budget: BudgetModel): Observable<BudgetModel>
-    deleteBudget(id: number): Observable<number>
+    deleteBudget(idBudget: number): Observable<number>
 
 }

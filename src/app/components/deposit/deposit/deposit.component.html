@@ -1,72 +1,84 @@
 <p>deposit works!</p>
 
-<h1>DevExtreme Angular Components Usage Samples</h1>
-
 <div class="demo-container">
     <h2>Deposit</h2>
 
-    <h2>Angular Forms</h2>
+     <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="monetaryFundType">Monetary Fund Type: <span class="lblError">*</span></label>
+            <div class="controls">
+                <select id="monetaryFundType" formControlName="monetaryFundType" class="form-control">
+                    @for (item of monetaryFundTypeList; track item.idMonetaryFundType) {
+                        <option [ngValue]="item">
+                        {{ item.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" style="width: 15%">
+                Submit
+            </button>
+        </div>
+     </form>
+
+    <dx-data-grid #mainGrid
+                id="gridDeposits"
+                [dataSource]="deposits"
+                [showBorders]="true"
+                [repaintChangesOnly]="true"
+                [columnAutoWidth]="true"
+                [width]="800"
+                (onEditorPreparing)="onEditorPreparing($event)"
+                (onEditingStart)="onEditingStart($event)"
+                (onSaving)="onSaving($event)"
+                (onRowValidating)="onRowValidating($event)"
+                (onRowRemoved)="onRowRemoved($event)">
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+    <dxo-editing mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true">
+      <dxo-popup [showTitle]="true"
+                [width]="800"
+                [height]="400">
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Save',
+              disabled: allValid,
+              onClick: saveButton
+          }">
+        </dxi-toolbar-item>
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Cancel',
+              onClick: cancelButton
+          }">
+        </dxi-toolbar-item>
+      </dxo-popup>
+      <dxo-form [colCount]="1">
+      </dxo-form>
+    </dxo-editing>
+    <dxi-column dataField="account" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="date" dataType="date" [setCellValue]="setCellValue" cellTemplate="dateCell">
+        <dxi-validation-rule type="required" message="Date is required."></dxi-validation-rule>
+    </dxi-column>
+     <div *dxTemplate="let cellData of 'dateCell'">
+        {{cellData.value | date: 'dd/MM/yyyy'}}
+    </div>
+    <dxi-column dataField="amount" [setCellValue]="setCellValue">
+        <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
+        <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
+    </dxi-column>
    
-    <h2>dxForm</h2>
-    <dx-form
-        #dxForm
-        [formData]="formData"
-        labelLocation="top"
-        validationGroup="formGroup">
-        <dxi-item
-            dataField="account"
-            editorType="dxTextBox">
-            <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
-        </dxi-item>
-        <dxi-item
-            dataField="date"
-            editorType="dxDateBox">
-            <dxi-validation-rule type="required" message="Date is required."></dxi-validation-rule>
-        </dxi-item>
-         <dxi-item 
-            dataField="amount" 
-            editorType="dxTextBox"
-            [label]="{text: 'Változó %'}">
-            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
-            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
-        </dxi-item>       
-        <dxi-item itemType="button" horizontalAlignment="left"
-            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveDeposit }">
-        </dxi-item>
-    </dx-form>
-
-    <mat-form-field>
-        <mat-label>Monetary Fund Type</mat-label>
-        <select matNativeControl (ngModel)="monetaryFundTypeSelected" name="car">
-        <option value="" selected></option>
-        @for (car of monetaryFundTypeList; track car) {
-            <option [value]="car.idMonetaryFundType">{{car.name}}</option>
-        }
-        </select>
-    </mat-form-field>
-
-
-    <h2>dxDataGrid</h2>
-
-    <dx-data-grid [dataSource]="deposits">
-        <dxo-paging [pageSize]="10"></dxo-paging>
-        <dxo-pager
-            [showPageSizeSelector]="true"
-            [allowedPageSizes]="[5, 10, 20]"
-            [showInfo]="true">
-        </dxo-pager>
-        <dxi-column dataField="IdDeposit"></dxi-column>
-        <dxi-column dataField="Account"></dxi-column>
-        <dxi-column dataField="Date"></dxi-column>
-        <dxi-column dataField="Amount"></dxi-column>
-        <dxi-column dataField="MonetaryFundType"></dxi-column>
-        <dxo-editing
-            [allowUpdating]="allowUpdating">
-        </dxo-editing>
-        <dxo-editing
-            [allowDeleting]="allowDeleting">
-        </dxo-editing>
-
-    </dx-data-grid>
+  </dx-data-grid>
 
 </div>

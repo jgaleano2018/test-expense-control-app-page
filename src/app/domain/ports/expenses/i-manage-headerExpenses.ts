@@ -5,9 +5,9 @@ export default interface IManageHeaderExpenses {
 
     getHeaderExpensess(): Observable<HeaderExpensesModel[]>
     searchHeaderExpensess(term: string): Observable<HeaderExpensesModel[]>
-    getHeaderExpenses(id: number): Observable<HeaderExpensesModel> 
-    addHeaderExpenses(hero: HeaderExpensesModel): Observable<HeaderExpensesModel>
-    updateHeaderExpenses(hero: HeaderExpensesModel): Observable<HeaderExpensesModel>
-    deleteHeaderExpenses(id: number): Observable<number>
+    getHeaderExpenses(idHeaderExpenses: number): Observable<HeaderExpensesModel> 
+    addHeaderExpenses(headerExpenses: HeaderExpensesModel): Observable<HeaderExpensesModel>
+    updateHeaderExpenses(headerExpenses: HeaderExpensesModel): Observable<HeaderExpensesModel>
+    deleteHeaderExpenses(headerExpenses: number): Observable<number>
 
 }

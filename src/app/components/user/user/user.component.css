@@ -1,0 +1,13 @@
+#form {
+    padding: 10px;
+    border: 1px solid;
+}
+
+#check-box {
+    margin-top: 10px;
+}
+
+#demo-container {
+    width: 900px;
+    position: relative;
+}

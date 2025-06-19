@@ -1,142 +1,193 @@
-<p>Expenses works!</p>
-
-<h1>DevExtreme Angular Components Usage Samples</h1>
+<p>header expenses works!</p>
 
 <div class="demo-container">
     <h2>Header Expenses</h2>
-   
-    <h2>dxForm</h2>
-    <dx-form
-        #dxForm
-        [formData]="formDataHeader"
-        labelLocation="top"
-        validationGroup="formGroup">
-        <dxi-item
-            dataField="account"
-            editorType="dxTextBox">
-            <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
-        </dxi-item>
-        <dxi-item
-            dataField="dateExpense"
-            editorType="dxDateBox">
-            <dxi-validation-rule type="required" message="Date Expense is required."></dxi-validation-rule>
-        </dxi-item>
-         <dxi-item
-            dataField="observations"
-            editorType="dxTextBox">
-            <dxi-validation-rule type="required" message="Observations is required."></dxi-validation-rule>
-        </dxi-item>
-         <dxi-item 
-            dataField="amount" 
-            editorType="dxTextBox"
-            [label]="{text: 'Változó %'}">
-            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
-            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
-        </dxi-item>       
-        <dxi-item itemType="button" horizontalAlignment="left"
-            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveHeaderExpenses }">
-        </dxi-item>
-    </dx-form>
+    <form [formGroup]="formDataHeader" (ngSubmit)="onSubmitHeader()">
+        
+         <div class="form-group">
+            <label for="business">Business: <span class="lblError">*</span></label>
+            <div class="controls">
+                <select id="business" formControlName="business" class="form-control">
+                    @for (item of businessList; track item.idBusiness) {
+                        <option [ngValue]="item">
+                        {{ item.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
 
-    <mat-form-field>
-        <mat-label>Business</mat-label>
-        <select matNativeControl (ngModel)="businessSelected" name="car">
-        <option value="" selected></option>
-        @for (car of businessList; track car) {
-            <option [value]="car.idBusiness">{{car.name}}</option>
-        }
-        </select>
-    </mat-form-field>
+        <div class="form-group">
+            <label for="monetaryFundType">Monetary Fund Type: <span class="lblError">*</span></label>
+            <div class="controls">
+                <select id="monetaryFundType" formControlName="monetaryFundType" class="form-control">
+                    @for (item of monetaryFundTypeList; track item.idMonetaryFundType) {
+                        <option [ngValue]="item">
+                        {{ item.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
 
-    <mat-form-field>
-        <mat-label>Monetary Fund Type</mat-label>
-        <select matNativeControl (ngModel)="monetaryFundTypeSelected" name="car">
-        <option value="" selected></option>
-        @for (car of monetaryFundTypeList; track car) {
-            <option [value]="car.idMonetaryFundType">{{car.name}}</option>
-        }
-        </select>
-    </mat-form-field>
+         <div class="form-group">
+            <label for="documentType">Document Type: <span class="lblError">*</span></label>
+            <div class="controls">
+                <select id="documentType" formControlName="documentType" class="form-control">
+                    @for (item of documentTypeList; track item.idDocumentType) {
+                        <option [ngValue]="item">
+                        {{ item.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
 
-    <h2>Detail Expenses</h2>
-   
-    <h2>dxForm</h2>
-    <dx-form
-        #dxForm
-        [formData]="formDataDetail"
-        labelLocation="top"
-        validationGroup="formGroup">
-        <dxi-item
-            dataField="idHeaderExpenses"
-            editorType="dxTextBox">
-            <dxi-validation-rule type="required" message="Id Header Expenses is required."></dxi-validation-rule>
-        </dxi-item>
-         <dxi-item 
-            dataField="amount" 
-            editorType="dxTextBox"
-            [label]="{text: 'Változó %'}">
-            <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
-            <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
-        </dxi-item>       
-        <dxi-item itemType="button" horizontalAlignment="left"
-            [buttonOptions]="{ text: 'Validate', type: 'success', onClick: saveDetailExpenses }">
-        </dxi-item>
-    </dx-form>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" style="width: 15%">
+                Submit
+            </button>
+        </div>
+     </form>
 
-    <mat-form-field>
-        <mat-label>Expenses Type</mat-label>
-        <select matNativeControl (ngModel)="expensesTypeSelected" name="car">
-        <option value="" selected></option>
-        @for (car of expensesTypeList; track car) {
-            <option [value]="car.idExpenseType">{{car.name}}</option>
-        }
-        </select>
-    </mat-form-field>
+    <dx-data-grid #mainGridHeader
+                id="gridHeaderExpenses"
+                [dataSource]="headerExpenses"
+                [showBorders]="true"
+                [repaintChangesOnly]="true"
+                [columnAutoWidth]="true"
+                [width]="800"
+                (onInitNewRow)="onInitNewRow($event)"
+                (onEditorPreparing)="onEditorPreparingHeader($event)"
+                (onEditingStart)="onEditingStartHeader($event)"
+                (onSaving)="onSavingHeader($event)"
+                (onRowValidating)="onRowValidatingHeader($event)"
+                (onRowRemoved)="onRowRemovedHeader($event)"
+                (onSelectionChanged)="onSelectionChangedHeader($event)">
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+    <dxo-editing mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true">
+      <dxo-popup [showTitle]="true"
+                [width]="800"
+                [height]="400">
+
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Save',
+              disabled: allValid,
+              onClick: saveButtonHeader
+          }">
+        </dxi-toolbar-item>
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Cancel',
+              onClick: cancelButtonHeader
+          }">
+        </dxi-toolbar-item>
+      </dxo-popup>
+      <dxo-form [colCount]="1">
+      </dxo-form>
+    </dxo-editing>
+    <dxi-column dataField="idHeaderExpenses" [setCellValue]="setCellValue" [formItem]="{editorOptions: { readOnly: true }}">
+    </dxi-column>
+    <dxi-column dataField="account" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required" message="Account is required."></dxi-validation-rule>
+    </dxi-column>
+    <dxi-column dataField="dateExpense" dataType="date" [setCellValue]="setCellValue" cellTemplate="dateCell">
+        <dxi-validation-rule type="required" message="Date Expenses is required."></dxi-validation-rule>
+    </dxi-column>
+    <div *dxTemplate="let cellData of 'dateCell'">
+        {{cellData.value | date: 'dd/MM/yyyy'}}
+    </div>
+     <dxi-column dataField="observations" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required" message="Observations is required."></dxi-validation-rule>
+    </dxi-column>
+
+  </dx-data-grid>
 
 
-    <h2>dxDataGrid - DetailExpenses</h2>
+  <h2>Detail Expenses</h2>
+    <form [formGroup]="formDataDetail" (ngSubmit)="onSubmitDetail()">
+        <div class="form-group">
+            <label for="expenseType">Expense Type: <span class="lblError">*</span></label>
+            <div class="controls">
+                <select id="expenseType" formControlName="expenseType" class="form-control">
+                    @for (item of expensesTypeList; track item.idExpenseType) {
+                        <option [ngValue]="item">
+                        {{ item.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" style="width: 15%">
+                Submit
+            </button>
+        </div>
+    </form>
 
-    <dx-data-grid [dataSource]="headerExpenses">
-        <dxo-paging [pageSize]="10"></dxo-paging>
-        <dxo-pager
-            [showPageSizeSelector]="true"
-            [allowedPageSizes]="[5, 10, 20]"
-            [showInfo]="true">
-        </dxo-pager>
-        <dxi-column dataField="idHeaderExpenses"></dxi-column>
-        <dxi-column dataField="Account"></dxi-column>
-        <dxi-column dataField="Date"></dxi-column>
-        <dxi-column dataField="Amount"></dxi-column>
-        <dxi-column dataField="MonetaryFundType"></dxi-column>
-        <dxo-editing
-            [allowUpdating]="allowUpdating">
-        </dxo-editing>
-        <dxo-editing
-            [allowDeleting]="allowDeleting">
-        </dxo-editing>
 
-    </dx-data-grid>
+    <dx-data-grid #mainGridDetail
+                id="gridDetailExpenses"
+                [dataSource]="detailExpenses"
+                [showBorders]="true"
+                [repaintChangesOnly]="true"
+                [columnAutoWidth]="true"
+                [width]="800"
+                (onInitNewRow)="onInitNewRowDetail($event)"
+                (onEditorPreparing)="onEditorPreparingDetail($event)"
+                (onEditingStart)="onEditingStartDetail($event)"
+                (onSaving)="onSavingDetail($event)"
+                (onRowValidating)="onRowValidatingDetail($event)"
+                (onRowRemoved)="onRowRemovedDetail($event)">
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+    <dxo-editing mode="popup"
+                [allowUpdating]="true"
+                [allowAdding]="true"
+                [allowDeleting]="true">
+      <dxo-popup [showTitle]="true"
+                [width]="800"
+                [height]="400">
 
-     <h2>dxDataGrid - DetailExpenses</h2>
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Save',
+              disabled: allValid,
+              onClick: saveButtonDetail
+          }">
+        </dxi-toolbar-item>
+        <dxi-toolbar-item widget="dxButton"
+                          location="after"
+                          toolbar="bottom"
+                          [options]="{
+              text: 'Cancel',
+              onClick: cancelButtonDetail
+          }">
+        </dxi-toolbar-item>
+      </dxo-popup>
+      <dxo-form [colCount]="1">
+      </dxo-form>
+    </dxo-editing>
+    <dxi-column dataField="idDetailExpenses" [setCellValue]="setCellValueDetail" [formItem]="{editorOptions: { readOnly: true }}">
+    </dxi-column>
+    <dxi-column dataField="amount" [setCellValue]="setCellValueDetail">
+        <dx-number-box #varNumberBox format="#,##0.00'%'"></dx-number-box>
+        <dxi-validation-rule type="required" message="Amount is required."></dxi-validation-rule>
+    </dxi-column>
 
-    <dx-data-grid [dataSource]="detailExpenses">
-        <dxo-paging [pageSize]="10"></dxo-paging>
-        <dxo-pager
-            [showPageSizeSelector]="true"
-            [allowedPageSizes]="[5, 10, 20]"
-            [showInfo]="true">
-        </dxo-pager>
-        <dxi-column dataField="idHeaderExpenses"></dxi-column>
-        <dxi-column dataField="idDetailExpenses"></dxi-column>
-        <dxi-column dataField="Amount"></dxi-column>
-        <dxi-column dataField="IdExpenseType"></dxi-column>
-        <dxo-editing
-            [allowUpdating]="allowUpdatingDetailExpenses">
-        </dxo-editing>
-        <dxo-editing
-            [allowDeleting]="allowDeletingDetailExpenses">
-        </dxo-editing>
+  </dx-data-grid>
 
-    </dx-data-grid>
 
 </div>

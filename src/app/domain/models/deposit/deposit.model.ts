@@ -5,4 +5,6 @@ export interface DepositModel {
   amount: number;
   idMonetaryFundType: number;
   idUser: number;
+  key: number;
+  type: string;
 }
